@@ -1,8 +1,8 @@
-package Iterations
+package Iterators
 
 import Providers.BalancedProvider
 
-class RoundRobinIteration : IIteration {
+class RoundRobinIterator : IIterator {
     private var posCurrent : Int = 0
 
     override fun getNext(providers : List<BalancedProvider>): Int {

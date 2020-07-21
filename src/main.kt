@@ -1,5 +1,5 @@
-import Iterations.RandomIteration
-import Iterations.RoundRobinIteration
+import Iterators.RandomIterator
+import Iterators.RoundRobinIterator
 import LoadBalancer.LoadBalancer
 import Providers.IProvider
 import Providers.Provider
@@ -8,7 +8,7 @@ import kotlin.concurrent.thread
 
 fun main(args : Array<String>) {
     val K : Int = 2
-    var loadBalancer = LoadBalancer(RandomIteration(), K)
+    var loadBalancer = LoadBalancer(RandomIterator(), K)
 
     println(">> Check that load balancer can't answer get() if there aren't any providers registered")
     try {
@@ -40,7 +40,7 @@ fun main(args : Array<String>) {
         println("Received value = ${loadBalancer.get()}")
     }
 
-    loadBalancer = LoadBalancer(RoundRobinIteration(), K)
+    loadBalancer = LoadBalancer(RoundRobinIterator(), K)
     loadBalancer.registerProviders(mutableListOf(
         Provider(50), Provider(50), Provider(50)
     ))

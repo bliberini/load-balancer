@@ -1,7 +1,7 @@
-package Iterations
+package Iterators
 
 import Providers.BalancedProvider
 
-interface IIteration {
+interface IIterator {
     fun getNext(providers : List<BalancedProvider>) : Int
 }

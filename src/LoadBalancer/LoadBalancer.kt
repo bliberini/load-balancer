@@ -1,13 +1,12 @@
 package LoadBalancer
 
-import Iterations.IIteration
+import Iterators.IIterator
 import Providers.BalancedProvider
 import Providers.IProvider
-import Providers.Provider
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.thread
 
-class LoadBalancer(private val iterator : IIteration, private val maxRequestsPerProvider : Int) : ILoadBalancer {
+class LoadBalancer(private val iterator : IIterator, private val maxRequestsPerProvider : Int) : ILoadBalancer {
     private var balancedProviders : List<BalancedProvider> = mutableListOf<BalancedProvider>()
     private val currentRequestsSharedLock = ReentrantLock()
     private val currentProviderSharedLock = ReentrantLock()
@@ -65,11 +64,12 @@ class LoadBalancer(private val iterator : IIteration, private val maxRequestsPer
 
     private fun increaseCurrentRequests() {
         try {
-           this.currentRequestsSharedLock.lock()
-            if (this.currentRequests == this.maxRequestsPerProvider * this.balancedProviders.size) {
+            this.currentRequestsSharedLock.lock()
+            val currentProviders = this.balancedProviders.filter { bp -> bp.isIncluded }.size
+            if (this.currentRequests == this.maxRequestsPerProvider * currentProviders) {
                throw Exception("Too many concurrent requests")
-           }
-           this.currentRequests++
+            }
+            this.currentRequests++
         } finally {
             this.currentRequestsSharedLock.unlock()
         }
